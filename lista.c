@@ -70,7 +70,9 @@ void adicionar(Cab *cab) {
     printf("Altura: ");
     scanf("%f", &altura);
 
+    /* Aloca somente o necessário */
     novo->nome = (char*) malloc(sizeof(char)*strlen(nome));
+    /* Copia para estrutura */
     strcpy(novo->nome, nome);
     novo->imc = (float) peso / (altura * altura);
 
@@ -123,6 +125,7 @@ void remover(Cab *cab) {
         printf("Nome para remover: ");
         scanf("%s", nome);
         if(strcmp(nome, aux->nome) == 0) {
+            /* Case primeiro elemento */
             aux->ant->prox = aux->prox;
             aux->prox->ant = aux->ant;
             cab->head = aux->prox;
@@ -130,6 +133,7 @@ void remover(Cab *cab) {
             free(aux->nome);
             free(aux);
         } else if(strcmp(nome, aux->ant->nome) == 0) {
+            /* Case ultimo elemento */
             aux = aux->ant;
             aux->ant->prox = cab->head;
             cab->head->ant = aux->ant;
@@ -137,8 +141,12 @@ void remover(Cab *cab) {
             free(aux->nome);
             free(aux);
         } else {
+            /* Demais casos */
+            /* Aux começa do segundo elemento */
             aux = aux->prox;
             
+            /* Pecorreremos 2 quantidades a menos pois já foi 
+               verificado os dois primeiros cases */
             for(i=0; i<(cab->qtd-2); i++) {
                 if(strcmp(nome, aux->nome) == 0) {
                     aux->ant->prox = aux->prox;
@@ -170,8 +178,10 @@ void imprimir(Cab *cab) {
 }
 
 void imprime_maior_menor(Cab *cab) {
+    /* Parâmetros para comparação */
     float maior = 0.0, menor = 99999.9;
     int i;
+    /* Variáveis para pecorrer e guardar o dado a ser imprimido no final */
     lista *aux = cab->head, *pmaior, *pmenor;
 
     if(cab->head == NULL) {
@@ -199,6 +209,7 @@ void desalocar(Cab *cab) {
     int i;
     lista *aux = cab->head, *desaloca;
 
+    /* Desaloca cada elemento da lista */
     for(i=0; i<cab->qtd; i++) {
         desaloca = aux;
         aux = aux->prox;
